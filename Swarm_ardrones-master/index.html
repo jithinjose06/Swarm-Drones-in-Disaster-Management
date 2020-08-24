@@ -1,0 +1,283 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Controller</title>
+
+
+ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+   integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+   crossorigin=""/>
+
+
+   </head>
+  <body>
+    <style >
+    .column {
+  float: left;
+  padding: 0px;
+}
+  
+.left {
+  width: 25%;
+  padding-left : 20px;
+}
+
+.right {
+  width: 60%;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+#mapid { height: 400px; }
+
+</style>
+
+
+    </style>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+
+<!-- Latest compiled JavaScript -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<br />
+
+<br />
+<div class="container">
+<div class="row">
+  <div class="column left" style="background-color:  #eaeded ; ">
+    <h2>CONTROLLER</h2>
+     <div class="container">
+        <h3>Battery: <span id="battery"></span>%</h3> <br />
+<button id="takeoff" class="btn btn-dark ">takeoff</button>
+<button id ="land" class="btn btn-dark">land</button>
+
+
+
+<br />
+
+<br />
+<br />
+
+<div style="padding-left: 50px">
+  <button id="front" class="btn btn-dark" >front</button> <br />
+</div>
+  <br />
+  <div style="padding-left:20px">
+  <button id="left" class="btn btn-dark">left..</button> 
+  
+  <button id="right" class="btn btn-dark">right</button>
+
+</div>
+<br />
+<div style="padding-left: 50px">
+
+  <button id="back" class="btn btn-dark">back</button>
+
+</div>
+<br />
+<br />
+
+</div>
+<div class="container"><button id="up" class="btn btn-dark">up </button> 
+
+<button id="down" class="btn btn-dark">down</button>
+<br />
+<br />
+
+<button id="clockwise" class="btn btn-dark">clockwise</button>
+<button id="anticlockwise" class="btn btn-dark">Anti-clockwise</button>
+
+<br />
+<br />
+
+<button id="flipahead" class="btn btn-dark">flipAhead</button>
+<button id="flipbehind"class="btn btn-dark">flipBehind</button>
+<br />
+<br />
+
+<br />
+
+<div style="padding-left: 50px">
+  
+<button id="stop" class="btn btn-dark">hover</button><br /><br /></div>
+<div style="padding-left: 30px">
+<button id="landwts" class="btn btn-dark">land with wts</button>
+
+   </div></div></div>
+  <div class="column right" style="background-color:#bbb; padding-right: 20px">
+    <h2 style="text-align: center">DRONE 1</h2>
+    <div id="droneStream" style="width:150px height:150px;float:right"></div>
+<!-- <h2 style="text-align: center">DRONE 2</h2>
+<div id="droneStream1" style="width:150px height:150px;float:right"></div>
+
+ -->
+<div style="padding:22px" >
+ <iframe src="http://localhost:8888" width="640px" height="350px" padding="10px" id="video1"></iframe>
+</div>
+   </div>
+</div>
+<br /><br />
+    <div id="mapid"></div>
+ <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+   integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+   crossorigin=""></script>
+
+
+</div>
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script src="/socket.io/socket.io.js"></script>
+<script>
+  
+
+
+
+/*$(document).ready(function() { /// Wait till page is loaded
+setInterval(timingLoad, 1000);
+function timingLoad() {
+var iframe = document.getElementById('video1');
+iframe.src = iframe.src;
+}
+}); //// End of Wait till page is loaded
+*/  var socket = io();
+socket.on('navdata', function (data) {
+  var $battery = document.getElementById("battery").innerHTML;
+  $battery = data.demo.batteryPercentage;
+});
+var landwts = $("#landwts");
+   landwts.click(function(){
+    console.log('landing with object');
+    socket.emit('landwts');
+   });
+
+   var land = $("#land");
+   land.click(function(){
+    console.log('land pressed');
+    socket.emit('land');
+   });
+
+   var up = $("#up");
+up.click(function(){
+    console.log('up...');
+    socket.emit('up');
+   });
+
+var down = $("#down");
+down.click(function(){
+    console.log('down');
+    socket.emit('down');
+   });
+
+var stop = $("#stop");
+stop.click(function(){
+    console.log('hover');
+    socket.emit('stop');
+
+      
+   });
+
+
+
+
+var clockwise = $("#clockwise");
+clockwise.click(function(){
+    console.log('clockwise..');
+    socket.emit('clockwise');
+   });
+
+var anticlockwise = $("#anticlockwise");
+anticlockwise.click(function(){
+    console.log('Anti-clockwise');
+    socket.emit('anticlockwise');
+   });
+
+var flipahead = $("#flipahead");
+flipahead.click(function(){
+    console.log('flipahead');
+    socket.emit('flipahead');
+   });
+
+var flipbehind = $("#flipbehind");
+flipbehind.click(function(){
+    console.log('flipBehind');
+    socket.emit('flipbehind');
+   });
+
+
+  var takeoff = $("#takeoff");
+takeoff.click(function(){
+console.log('takeoff pressed');
+socket.emit('takeoff');
+
+});
+var front = $("#front");
+front.click(function(){
+socket.emit('front');
+console.log('moving front');
+});
+
+
+var back = $("#back");
+back.click(function(){
+
+socket.emit('back');
+console.log('back..');
+
+});
+
+var left = $("#left");
+left.click(function(){
+socket.emit('left');
+console.log('moving left..');
+});
+var right = $("#right");
+right.click(function(){
+socket.emit('right');
+console.log('moving right..');
+});
+
+socket.on('gps',function(lat,lng){
+  console.log(lat);
+
+  var mymap = L.map('mapid').setView([lat, lng], 13);
+
+L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+        minZoom : 18,
+    }).addTo(mymap);
+  L.marker([lat,lng], {icon: greenIcon}).addTo(mymap);
+});
+
+  var greenIcon = L.icon({
+    iconUrl: 'http://arcencielstudio.com/wp-content/uploads/2016/08/icono-video-negro.svg',
+    shadowUrl: '',
+
+    iconSize:     [90, 180], // size of the icon
+    shadowSize:   [50, 64], // size of the shadow
+    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+    shadowAnchor: [4, 62],  // the same for the shadow
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+});
+
+</script>
+
+
+
+<script src="/dronestream/nodecopter-client.js"></script>
+<script>
+  new NodecopterStream(document.getElementById("droneStream"));
+
+  /*  new NodecopterStream(document.getElementById("droneStream1"));
+*/
+</script> </body>
+</html>

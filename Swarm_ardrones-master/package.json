@@ -1,0 +1,26 @@
+{
+  "name": "controller",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ar-drone": "^0.3.3",
+    "dronestream": "^1.1.1",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "http-server": "^0.11.1",
+    "jquery": "^3.3.1",
+    "keypress": "^0.2.1",
+    "leaflet": "^1.4.0",
+    "realtime": "0.0.2",
+    "socket.io": "^2.2.0",
+    "socket.io-client": "^2.2.0",
+    "xterm": "^3.12.0"
+  }
+}
